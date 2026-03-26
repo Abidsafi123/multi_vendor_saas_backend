@@ -27,6 +27,10 @@ export const createApp = () => {
   app.use(helmet());
   app.use(morgan("dev"));
 
+  app.get('/',(req,res)=>{
+    res.send("Backend is running ")
+  })
+
   app.use("/auth/users", authRoutes);
   app.use("/api", testRoutes);
   app.use("/api/store", storeRoutes);
