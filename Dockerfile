@@ -1,6 +1,6 @@
 #Sample Dockerfile for NodeJS Apps
 
-FROM node:18
+FROM node:20
 
 ENV NODE_ENV=production
 
@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD [ "node", "index.js" ]
+CMD [ "node", "server.js" ]
