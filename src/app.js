@@ -1,5 +1,4 @@
 import express from "express";
-
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -15,27 +14,35 @@ import ratelimiter from "express-rate-limit";
 export const createApp = () => {
   const app = express();
 
+  // Middleware
   app.use(express.json());
   app.use(cors());
+  app.use(helmet());
+  app.use(morgan("dev"));
 
+  // Rate limiter: limit requests to 100 per 15 min
   const limiter = ratelimiter({
     windowMs: 15 * 60 * 1000,
     max: 100,
     message: "Too many requests, please try again later.",
   });
   app.use("/api", limiter);
-  app.use(helmet());
-  app.use(morgan("dev"));
 
- 
+  // ✅ Root route for browser testing
+  app.get("/", (req, res) => {
+    res.send("Server is running ✅");
+  });
 
-  app.use("/auth/users", authRoutes);
-  app.use("/api", testRoutes);
+  // API Routes
+  app.use("/api/users", authRoutes);       // login/register
+  app.use("/api/test", testRoutes);
   app.use("/api/store", storeRoutes);
   app.use("/api/products", productRoutes);
   app.use("/api/orders", orderRoutes);
   app.use("/api/payment", stripeRoutes);
 
+  // Error middleware
   app.use(errorMiddleware);
+
   return app;
 };

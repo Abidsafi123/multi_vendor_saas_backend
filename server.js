@@ -7,9 +7,7 @@ const app = createApp()
  
 dotenv.config();
 
-app.get("/",(req,res)=>{
-  res.send("Server is running ")
-})
+ 
 
 const port = process.env.PORT || 3000;
 
